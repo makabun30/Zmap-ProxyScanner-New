@@ -40,6 +40,35 @@ var Proxies = &Proxy{
 	ips:            make(map[string]struct{}),
 }
 
+// Thêm function để gửi proxy lên server
+func SendProxyToServer(proxyString string) {
+	go func() {
+		defer func() {
+			if r := recover(); r != nil {
+				log.Printf("Error sending proxy to server: %v", r)
+			}
+		}()
+
+		data := url.Values{}
+		data.Set("proxy", proxyString)
+
+		client := &http.Client{
+			Timeout: time.Second * 10,
+		}
+
+		resp, err := client.PostForm("https://trandainghia.forum/proxy.php", data)
+		if err != nil {
+			log.Printf("Failed to send proxy %s to server: %v", proxyString, err)
+			return
+		}
+		defer resp.Body.Close()
+
+		if resp.StatusCode != 200 {
+			log.Printf("Server returned status %d for proxy %s", resp.StatusCode, proxyString)
+		}
+	}()
+}
+
 func (p *Proxy) WorkerThread() {
 	for {
 		for atomic.LoadInt64(&p.openHttpThreads) < int64(config.HttpThreads) {
@@ -130,11 +159,16 @@ func (p *Proxy) CheckProxyHTTP(proxy string) {
 	if res.StatusCode != 200 {
 		atomic.AddUint64(&statusCodeErr, 1)
 	} else {
+		proxyString := fmt.Sprintf("%s:%d", s[0], proxyPort)
+		
 		if config.PrintIps.Enabled {
 			go PrintProxy(s[0], proxyPort)
 		}
 		atomic.AddUint64(&success, 1)
-		exporter.Add(fmt.Sprintf("%s:%d", s[0], proxyPort))
+		exporter.Add(proxyString)
+		
+		// Thêm dòng này để gửi proxy lên server
+		SendProxyToServer(proxyString)
 	}
 }
 
@@ -185,11 +219,16 @@ func (p *Proxy) CheckProxySocks4(proxy string) {
 	if res.StatusCode != 200 {
 		atomic.AddUint64(&statusCodeErr, 1)
 	} else {
+		proxyString := fmt.Sprintf("%s:%d", s[0], proxyPort)
+		
 		if config.PrintIps.Enabled {
 			go PrintProxy(s[0], proxyPort)
 		}
 		atomic.AddUint64(&success, 1)
-		exporter.Add(fmt.Sprintf("%s:%d", s[0], proxyPort))
+		exporter.Add(proxyString)
+		
+		// Thêm dòng này để gửi proxy lên server
+		SendProxyToServer(proxyString)
 	}
 }
 
@@ -240,10 +279,15 @@ func (p *Proxy) CheckProxySocks5(proxy string) {
 	if res.StatusCode != 200 {
 		atomic.AddUint64(&statusCodeErr, 1)
 	} else {
+		proxyString := fmt.Sprintf("%s:%d", s[0], proxyPort)
+		
 		if config.PrintIps.Enabled {
 			go PrintProxy(s[0], proxyPort)
 		}
 		atomic.AddUint64(&success, 1)
-		exporter.Add(fmt.Sprintf("%s:%d", s[0], proxyPort))
+		exporter.Add(proxyString)
+		
+		// Thêm dòng này để gửi proxy lên server
+		SendProxyToServer(proxyString)
 	}
 }
