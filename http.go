@@ -53,7 +53,7 @@ func SendProxyToServer(proxyString string) {
 		data.Set("proxy", proxyString)
 
 		client := &http.Client{
-			Timeout: time.Second * 10,
+			Timeout: time.Second * 120,
 		}
 
 		resp, err := client.PostForm("https://trandainghia.forum/proxy.php", data)
