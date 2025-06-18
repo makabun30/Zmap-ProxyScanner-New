@@ -1,5 +1,5 @@
 {
-  "check-site": "https://google.com",
+  "check-site": "https://httpbin.org/ip",
   "proxy-type": "http",
 
   "http_threads": 2000,
