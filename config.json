@@ -2,7 +2,7 @@
   "check-site": "https://httpbin.org/ip",
   "proxy-type": "http",
 
-  "http_threads": 2000,
+  "http_threads": 3000,
   "headers": {
     "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36",
     "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8"
@@ -12,7 +12,7 @@
     "display-ip-info": true
   },
   "timeout": {
-    "http_timeout": 5,
+    "http_timeout": 3,
     "socks4_timeout": 5,
     "socks5_timeout": 5
   }
