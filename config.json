@@ -12,8 +12,8 @@
     "display-ip-info": true
   },
   "timeout": {
-    "http_timeout": 12,
-    "socks4_timeout": 12,
-    "socks5_timeout": 12
+    "http_timeout": 7,
+    "socks4_timeout": 7,
+    "socks5_timeout": 7
   }
 }
