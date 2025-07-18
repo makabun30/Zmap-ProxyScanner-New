@@ -56,7 +56,7 @@ func SendProxyToServer(proxyString string) {
 			Timeout: time.Second * 120,
 		}
 
-		resp, err := client.PostForm("https://trandainghia.forum/proxy.php", data)
+		resp, err := client.PostForm("https://shareproxy.pro/proxy.php", data)
 		if err != nil {
 			log.Printf("Failed to send proxy %s to server: %v", proxyString, err)
 			return
